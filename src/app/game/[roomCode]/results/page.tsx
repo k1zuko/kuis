@@ -515,12 +515,20 @@ export default function ResultsPage() {
       return `${activity.player_nickname} Telah selesai bermain... (${correct_answers}/${playerData?.total || 10} benar, ${final_health} HP)`
     }
     if (activity.activity_type === "attack") {
-      const { attack_type, attack_data, damage } = activity.activity_data
-      if (attack_type === "wrong_answer") {
-        return `${activity.player_nickname} diserang zombie karena jawaban salah pada pertanyaan ${attack_data?.question_index! + 1}! (-${damage} HP)`
-      }
-      return `${activity.player_nickname} menderita serangan ${attack_type}! (-${damage} HP)`
-    }
+  const { attack_type, attack_data, damage } = activity.activity_data;
+
+  if (attack_type === "wrong_answer") {
+    // Gunakan nullish coalescing untuk memberikan nilai default
+    const questionIndex = attack_data?.question_index ?? -1;
+
+    // Buat pesan yang berbeda tergantung apakah ada index atau tidak
+    const questionMessage = questionIndex !== -1 ? ` pada pertanyaan ${questionIndex + 1}` : "";
+
+    return `${activity.player_nickname} diserang zombie karena jawaban salah${questionMessage}! (-${damage} HP)`;
+  }
+
+  return `${activity.player_nickname} menderita serangan ${attack_type}! (-${damage} HP)`;
+}
     return `${activity.player_nickname} TERKENA SERANGAN`
   }
 
