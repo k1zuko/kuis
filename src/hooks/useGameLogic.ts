@@ -118,12 +118,16 @@ export function useGameLogic({ room, gameState, players, currentPlayer }: GameLo
             // Create health state if it doesn't exist
             if (!healthState) {
               console.log("🆕 Creating new health state...")
-              const { data: newHealthState, error: createError } = await supabase
+              // Deklarasikan healthState dengan 'let' di awal fungsi agar bisa diubah
+let healthState = null; 
+
+// Gunakan 'const' untuk hasil dari supabase karena nilainya tidak akan berubah
+const { data: newHealthState, error: createError } = await supabase
   .from("player_health_states")
   .insert({
     player_id: currentPlayer.id,
     room_id: room.id,
-    health: 2, // Start with 3, reduce to 2 for first wrong answer
+    health: 2,
     is_being_attacked: true,
     last_attack_time: new Date().toISOString(),
   })
@@ -133,7 +137,7 @@ export function useGameLogic({ room, gameState, players, currentPlayer }: GameLo
 if (createError) {
   console.error("❌ Error creating health state:", createError);
 } else {
-  // Masalah Anda mungkin ada di sini jika healthState sudah dideklarasikan sebagai const di luar blok ini
+  // Sekarang, healthState bisa diisi dengan nilai baru
   healthState = newHealthState;
   console.log("✅ Health state created:", healthState);
 }
