@@ -16,6 +16,7 @@ export type GameRoom = {
   max_players: number // Used in HostPage.tsx for player count display
   duration: number // Used in HostPage.tsx for duration display
   questions: any[] // Used in HostPage.tsx, can be refined later
+  question_count: number // From first definition, used in HostPage.tsx
   created_at: string
   updated_at: string
 }
